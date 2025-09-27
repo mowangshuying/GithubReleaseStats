@@ -40,6 +40,9 @@ else()
     )
 endif()
 
+set_property(TARGET ${TGT} PROPERTY WIN32_EXECUTABLE true)
+
+
 set(QSS_FILES
     "StyleSheet/light/StatsWindow.qss"
     "StyleSheet/dark/StatsWindow.qss"
