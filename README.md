@@ -2,6 +2,8 @@
 
 使用Qt编写的github下载量统计工具，采用FluentUI(作为子模块).
 
+![image-20250927125558535](./doc/imgs/app.png)
+
 ## 环境
 
 Qt6.5.1
