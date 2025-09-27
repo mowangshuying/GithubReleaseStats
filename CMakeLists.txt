@@ -43,6 +43,7 @@ endif()
 set(QSS_FILES
     "StyleSheet/light/StatsWindow.qss"
     "StyleSheet/dark/StatsWindow.qss"
+    "StyleSheet/atomOneDark/StatsWindow.qss"
 )
 source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${QSS_FILES})
 

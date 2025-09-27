@@ -14,11 +14,9 @@ class StatsWindow : public FluFrameLessWidget
   public:
     StatsWindow(QWidget* parent = nullptr);
 
-    void contextMenuEvent(QContextMenuEvent* event);
-
   public slots:
     void onThemeChanged();
 
   protected:
-    FluMenu* m_contextMenu;
+
 };

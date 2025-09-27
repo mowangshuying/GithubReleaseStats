@@ -9,7 +9,10 @@
 #include <FluHNavigationSearchItem.h>
 #include <FluHNavigationSettingsItem.h>
 #include <QContextMenuEvent>
+#include <FluThemeButton.h>
+#include <FramelessHelper/Widgets/framelesswidgetshelper.h>
 
+FRAMELESSHELPER_USE_NAMESPACE
 StatsWindow::StatsWindow(QWidget* parent /*= nullptr*/) : FluFrameLessWidget(parent)
 {
     setWindowTitle("Github Release Stats Dev");
@@ -22,42 +25,34 @@ StatsWindow::StatsWindow(QWidget* parent /*= nullptr*/) : FluFrameLessWidget(par
     setWindowIcon(QIcon(":/res/Tiles/GalleryIcon.ico"));
 #endif
 
+
+#if !defined USE_WINDOWKIT_WIDGET
     m_titleBar->chromePalette()->setTitleBarActiveBackgroundColor(Qt::transparent);
     m_titleBar->chromePalette()->setTitleBarInactiveBackgroundColor(Qt::transparent);
     m_titleBar->chromePalette()->setTitleBarActiveForegroundColor(Qt::black);
     m_titleBar->chromePalette()->setTitleBarInactiveForegroundColor(Qt::black);
     m_titleBar->setFixedHeight(36);
 
+#ifndef Q_OS_MACOS
+    auto hLayout = (QHBoxLayout *)m_titleBar->layout();
+    auto vLayout = (QVBoxLayout *)hLayout->itemAt(1)->layout();
+    auto hButtonLayout = (QHBoxLayout *)vLayout->itemAt(0)->layout();
+    auto themeButton = new FluThemeButton;
+    hButtonLayout->insertWidget(0, themeButton);
+    FramelessWidgetsHelper::get(this)->setHitTestVisible(themeButton);
+
+    //connect(themeButton, &FluThemeButton::clickedThemeButton, this, [=]() {
+        // auto settingsPages = (FluSettingPage *)m_sLayout->getWidget("SettingPage");
+        // settingsPages->updateThemeSelectBox();
+    //});
+#endif
+
+#endif
+
     m_titleBar->setObjectName("titleBar");
-
-    m_contextMenu = new FluMenu;
-    auto lightAction = new FluAction;
-    lightAction->setText("light");
-
-    auto darkAction = new FluAction;
-    darkAction->setText("dark");
-
-    // auto atomOneDarkAction = new FluAction;
-    // atomOneDarkAction->setText("atomOneDark");
-
-    m_contextMenu->addAction(lightAction);
-    m_contextMenu->addAction(darkAction);
-    // m_contextMenu->addAction(atomOneDarkAction);
-
-    connect(lightAction, &FluAction::triggered, this, [=]() { FluThemeUtils::getUtils()->setTheme(FluTheme::Light); });
-
-    connect(darkAction, &FluAction::triggered, this, [=]() { FluThemeUtils::getUtils()->setTheme(FluTheme::Dark); });
-
-    // connect(atomOneDarkAction, &FluAction::triggered, this, [=]() { FluThemeUtils::getUtils()->setTheme(FluTheme::AtomOneDark); });
 
     onThemeChanged();
     connect(FluThemeUtils::getUtils(), &FluThemeUtils::themeChanged, [=](FluTheme theme) { onThemeChanged(); });
-    // onThemeChanged();
-}
-
-void StatsWindow::contextMenuEvent(QContextMenuEvent* event)
-{
-    m_contextMenu->exec(event->globalPos());
 }
 
 void StatsWindow::onThemeChanged()
