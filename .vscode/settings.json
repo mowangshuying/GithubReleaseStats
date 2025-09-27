@@ -8,5 +8,17 @@
     },
     "files.autoGuessEncoding": true,
     "cmake.outputLogEncoding": "utf-8",
-    "cmake.enableTraceLogging": true
+    "cmake.enableTraceLogging": true,
+    "files.associations": {
+        "chrono": "cpp",
+        "xlocale": "cpp",
+        "qtcoredepends": "cpp",
+        "qtdesignerdepends": "cpp",
+        "qtguidepends": "cpp",
+        "qtopenglwidgetsdepends": "cpp",
+        "qtopengldepends": "cpp",
+        "qtuiplugindepends": "cpp",
+        "qtwidgetsdepends": "cpp",
+        "qtxmldepends": "cpp"
+    }
 }

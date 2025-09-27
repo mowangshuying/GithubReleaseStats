@@ -13,8 +13,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${PROJECT_BINARY_DIR}/bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARY_DIR}/bin")
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Svg Charts Core5Compat)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Svg Charts Core5Compat)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Svg Charts Core5Compat Network)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Svg Charts Core5Compat Network)
 
 add_subdirectory(3rdparty/FluentUI)
 
@@ -44,6 +44,9 @@ set(QSS_FILES
     "StyleSheet/light/StatsWindow.qss"
     "StyleSheet/dark/StatsWindow.qss"
     "StyleSheet/atomOneDark/StatsWindow.qss"
+    "StyleSheet/light/InfoCard.qss"
+    "StyleSheet/dark/InfoCard.qss"
+    "StyleSheet/atomOneDark/InfoCard.qss"
 )
 source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${QSS_FILES})
 
@@ -59,4 +62,5 @@ target_link_libraries(${TGT}
     PRIVATE 
     FluControls
     FluUtils
+    Qt${QT_VERSION_MAJOR}::Network
     )
