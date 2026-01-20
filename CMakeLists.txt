@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(GithubReleaseStatus VERSION 1.0.0 LANGUAGES CXX)
+project(GithubReleaseStats VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -23,7 +23,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/FluentUI/FluUtils
 )
 
-set(TGT GithubReleaseStatus)  # Add this line to define the target name
+set(TGT GithubReleaseStats)  # Add this line to define the target name
 FILE(GLOB DIR_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "*.h"
     "*.cpp"
