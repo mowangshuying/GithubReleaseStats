@@ -1,7 +1,7 @@
 #include <QApplication>
 
-#include <QWidget>
 #include "StatsWindow.h"
+#include <QWidget>
 
 int main(int argc, char *argv[])
 {

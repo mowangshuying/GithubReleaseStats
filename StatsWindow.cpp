@@ -1,31 +1,30 @@
 #include "StatsWindow.h"
 
+#include "Info.h"
+#include "InfoCard.h"
+#include <FluHNavigationIconTextItem.h>
+#include <FluHNavigationSearchItem.h>
+#include <FluHNavigationSettingsItem.h>
+#include <FluLogUtils.h>
+#include <FluThemeButton.h>
+#include <FluUtils.h>
 #include <FramelessHelper/Core/framelessmanager.h>
 #include <FramelessHelper/Widgets/framelesswidgetshelper.h>
 #include <FramelessHelper/Widgets/standardsystembutton.h>
 #include <FramelessHelper/Widgets/standardtitlebar.h>
-#include <FluUtils.h>
-#include <FluHNavigationIconTextItem.h>
-#include <FluHNavigationSearchItem.h>
-#include <FluHNavigationSettingsItem.h>
 #include <QContextMenuEvent>
-#include <FluThemeButton.h>
-#include <FramelessHelper/Widgets/framelesswidgetshelper.h>
-#include <FluLogUtils.h>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QUrl>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
-#include "Info.h"
-#include "InfoCard.h"
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QUrl>
 // #include "ProjectDetailCard.h"
 
 FRAMELESSHELPER_USE_NAMESPACE
-StatsWindow::StatsWindow(QWidget* parent /*= nullptr*/) : FluFrameLessWidget(parent)
+StatsWindow::StatsWindow(QWidget *parent /*= nullptr*/) : FluFrameLessWidget(parent)
 {
     APIRoot = "https://api.github.com/";
     m_networkManager = new QNetworkAccessManager(this);
@@ -36,10 +35,9 @@ StatsWindow::StatsWindow(QWidget* parent /*= nullptr*/) : FluFrameLessWidget(par
 #endif
 
     setWindowIcon(FluIconUtils::getFluentIcon(FluAwesomeType::Library, FluThemeUtils::getUtils()->getTheme()));
-// #ifdef USE_QRC
+    // #ifdef USE_QRC
     // setWindowIcon(QIcon(":/res/Tiles/GalleryIcon.ico"));
-// #endif
-
+    // #endif
 
 #if !defined USE_WINDOWKIT_WIDGET
     m_titleBar->chromePalette()->setTitleBarActiveBackgroundColor(Qt::transparent);
@@ -56,9 +54,10 @@ StatsWindow::StatsWindow(QWidget* parent /*= nullptr*/) : FluFrameLessWidget(par
     hButtonLayout->insertWidget(0, themeButton);
     FramelessWidgetsHelper::get(this)->setHitTestVisible(themeButton);
 
-    //connect(themeButton, &FluThemeButton::clickedThemeButton, this, [=]() {
-        // auto settingsPages = (FluSettingPage *)m_sLayout->getWidget("SettingPage");
-        // settingsPages->updateThemeSelectBox();
+    // connect(themeButton, &FluThemeButton::clickedThemeButton, this, [=]() {
+    //  auto settingsPages = (FluSettingPage
+    //  *)m_sLayout->getWidget("SettingPage");
+    //  settingsPages->updateThemeSelectBox();
     //});
 #endif
 
@@ -73,7 +72,6 @@ StatsWindow::StatsWindow(QWidget* parent /*= nullptr*/) : FluFrameLessWidget(par
     m_scrollView->getMainLayout()->setAlignment(Qt::AlignTop);
     m_contentLayout->addWidget(m_scrollView, 1);
 
-
     m_projectDetailCard = new ProjectDetailCard;
     connect(m_projectDetailCard, &ProjectDetailCard::clickedShowReleaseBtn, this, &StatsWindow::onClickedShowReleaseBtn);
     m_scrollView->getMainLayout()->addWidget(m_projectDetailCard, 0, Qt::AlignTop | Qt::AlignHCenter);
@@ -85,11 +83,11 @@ StatsWindow::StatsWindow(QWidget* parent /*= nullptr*/) : FluFrameLessWidget(par
     connect(FluThemeUtils::getUtils(), &FluThemeUtils::themeChanged, [=](FluTheme theme) { onThemeChanged(); });
 }
 
-
 void StatsWindow::onClickedShowReleaseBtn()
 {
-        // 移除除了第一个窗口的其他窗口
-    while (m_scrollView->getMainLayout()->count() > 1) {
+    // 移除除了第一个窗口的其他窗口
+    while (m_scrollView->getMainLayout()->count() > 1)
+    {
         auto widget = m_scrollView->getMainLayout()->itemAt(1)->widget();
         m_scrollView->getMainLayout()->takeAt(1);
         // widget->deleteLater();
@@ -99,10 +97,11 @@ void StatsWindow::onClickedShowReleaseBtn()
     // 向远端发送http请求获取仓库信息
     QString userOrOrganizationName = m_projectDetailCard->getUserOrOrganizationName();
     QString repositoryName = m_projectDetailCard->getRepositoryName();
-    // LOG_DEBUG << "userOrOrganizationName:" << userOrOrganizationName << " repositoryName:" << repositoryName;
+    // LOG_DEBUG << "userOrOrganizationName:" << userOrOrganizationName << "
+    // repositoryName:" << repositoryName;
 
     QString url = APIRoot + "repos/" + userOrOrganizationName + "/" + repositoryName + "/releases";
-    
+
     // 发送GET请求
     QNetworkRequest request;
     request.setUrl(QUrl(url));
@@ -111,24 +110,24 @@ void StatsWindow::onClickedShowReleaseBtn()
     m_networkManager->get(request);
 }
 
-void StatsWindow::onNetworkReply(QNetworkReply* reply)
+void StatsWindow::onNetworkReply(QNetworkReply *reply)
 {
     // 检查网络响应是否有错误
-    if (reply->error() != QNetworkReply::NoError) {
-        QMessageBox::warning(this, "Network Error", 
-                             QString("Network error occurred: %1").arg(reply->errorString()));
+    if (reply->error() != QNetworkReply::NoError)
+    {
+        QMessageBox::warning(this, "Network Error", QString("Network error occurred: %1").arg(reply->errorString()));
         reply->deleteLater();
         return;
     }
 
     // 获取响应数据
     QByteArray responseData = reply->readAll();
-    
+
     // 解析JSON数据
     QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
-    if (!jsonDoc.isArray()) {
-        QMessageBox::warning(this, "Data Error", 
-                             "Invalid data received from server");
+    if (!jsonDoc.isArray())
+    {
+        QMessageBox::warning(this, "Data Error", "Invalid data received from server");
         reply->deleteLater();
         return;
     }
@@ -141,21 +140,19 @@ void StatsWindow::onNetworkReply(QNetworkReply* reply)
     QJsonArray releaseInfos = jsonDoc.array();
 
     // 遍历releasesInfos数组，并获取每个发布信息
-    for (const QJsonValue& releaseInfo : releaseInfos) {
-
+    for (const QJsonValue &releaseInfo : releaseInfos)
+    {
         // Info info();
         // ReleaseInfo releaseInfo(,);
 
-
         QJsonObject releaseInfoObj = releaseInfo.toObject();
-        
+
         QString tagName = releaseInfoObj["tag_name"].toString();
         // "author" "login"
         // QString authorLogin = releaseInfoObj["author"]["login"].toString();
-        
+
         QString author = releaseInfoObj["author"].toObject()["login"].toString();
         QString publishAt = releaseInfoObj["published_at"].toString();
-        
 
         // ReleaseInfo releaseInfo(publishAt, author, );
         // LOG_DEBUG << "Published on:" << publishAt;
@@ -165,22 +162,23 @@ void StatsWindow::onNetworkReply(QNetworkReply* reply)
         int nDownloadCounts = 0;
 
         QList<DownloadInfo> downloadInfos;
-        for (const QJsonValue& asset : releaseInfoObj["assets"].toArray()) {
+        for (const QJsonValue &asset : releaseInfoObj["assets"].toArray())
+        {
             QJsonObject assetObj = asset.toObject();
             QString name = assetObj["name"].toString();
             QString browserDownloadUrl = assetObj["browser_download_url"].toString();
 
             QString updateAt = assetObj["updated_at"].toString();
-            int size = assetObj["size"].toInt() / (1024 * 1024); // size转换为MB
+            int size = assetObj["size"].toInt() / (1024 * 1024);  // size转换为MB
             QString sizeStr = QString::number(size) + "MB";
 
             int downloadCount = assetObj["download_count"].toInt();
 
-
             DownloadInfo downloadInfo(name, sizeStr, updateAt, downloadCount, browserDownloadUrl);
             downloadInfos.append(downloadInfo);
 
-            // LOG_DEBUG << "Asset Name:" << name << " Downloads:" << downloadCount << " UpdateAt:" << updateAt;
+            // LOG_DEBUG << "Asset Name:" << name << " Downloads:" << downloadCount <<
+            // " UpdateAt:" << updateAt;
 
             nDownloadCounts += downloadCount;
         }
@@ -192,12 +190,9 @@ void StatsWindow::onNetworkReply(QNetworkReply* reply)
         m_scrollView->getMainLayout()->addWidget(infoCard, 0, Qt::AlignTop | Qt::AlignHCenter);
     }
 
-    
-    
-    
     // TODO: 处理获取到的发布信息，显示在UI上
     // 这里应该处理releases数组中的数据，并更新UI
-    
+
     reply->deleteLater();
 }
 
@@ -216,7 +211,7 @@ void StatsWindow::onThemeChanged()
 #endif
         m_titleBar->show();
     }
-    else if(FluThemeUtils::isDarkTheme () || FluThemeUtils::isAtomOneDarkTheme())
+    else if (FluThemeUtils::isDarkTheme() || FluThemeUtils::isAtomOneDarkTheme())
     {
         m_titleBar->chromePalette()->setTitleBarActiveBackgroundColor(Qt::transparent);
         m_titleBar->chromePalette()->setTitleBarInactiveBackgroundColor(Qt::transparent);
@@ -232,5 +227,5 @@ void StatsWindow::onThemeChanged()
 
     // just do stylesheet;
     FluStyleSheetUitls::setQssByFileName("StatsWindow.qss", this, FluThemeUtils::getUtils()->getTheme());
-    setWindowIcon(FluIconUtils::getFluentIcon(FluAwesomeType::Library, FluThemeUtils::getUtils()->getTheme()));    
+    setWindowIcon(FluIconUtils::getFluentIcon(FluAwesomeType::Library, FluThemeUtils::getUtils()->getTheme()));
 }

@@ -1,19 +1,18 @@
 #pragma once
 
-#include <QWidget>
 #include "FluLabel.h"
 #include "FluLineEdit.h"
 #include "FluStyleButton.h"
 #include <QVBoxLayout>
+#include <QWidget>
 
 class ProjectDetailCard : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     ProjectDetailCard(QWidget *parent = nullptr);
     ~ProjectDetailCard();
-
 
     QString getUserOrOrganizationName()
     {
@@ -26,13 +25,14 @@ public:
     }
 
     // void paintEvent(QPaintEvent *event);
-signals:
+  signals:
     void clickedShowReleaseBtn();
-protected:
+
+  protected:
     QVBoxLayout *m_vMainLayout;
 
     FluLabel *m_titleLabel;
-    FluLineEdit* m_userOrOrganizationNameLineEdit;
-    FluLineEdit* m_repositoryNameLineEdit;
-    FluStyleButton* m_showReleaseBtn;
+    FluLineEdit *m_userOrOrganizationNameLineEdit;
+    FluLineEdit *m_repositoryNameLineEdit;
+    FluStyleButton *m_showReleaseBtn;
 };

@@ -1,9 +1,9 @@
 #include "InfoCard.h"
-#include <QVBoxLayout>
-#include "FluLabel.h"
 #include "FluHyperLinkButton.h"
-#include "FluVSplitLine.h"
+#include "FluLabel.h"
 #include "FluUtils.h"
+#include "FluVSplitLine.h"
+#include <QVBoxLayout>
 InfoCard::InfoCard(Info info, QWidget *parent) : QWidget(parent), m_info(info)
 {
     auto vMainLayout = new QVBoxLayout(this);
@@ -12,14 +12,14 @@ InfoCard::InfoCard(Info info, QWidget *parent) : QWidget(parent), m_info(info)
     auto tagNameLabel = new FluLabel;
     tagNameLabel->setText(m_info.getTagName());
     auto splitLine = new FluVSplitLine;
-    vMainLayout->addWidget(tagNameLabel,0, Qt::AlignHCenter);
+    vMainLayout->addWidget(tagNameLabel, 0, Qt::AlignHCenter);
     vMainLayout->addWidget(splitLine);
 
     // Release Info
     auto releaseInfoLabel = new FluLabel;
     releaseInfoLabel->setText("Release Info:");
     vMainLayout->addWidget(releaseInfoLabel);
-    
+
     auto publishedOnLabel = new FluLabel;
     auto releaseAuthorLabel = new FluLabel;
     auto downloadsLabel = new FluLabel;
@@ -40,7 +40,7 @@ InfoCard::InfoCard(Info info, QWidget *parent) : QWidget(parent), m_info(info)
     {
         auto linkBtn = new FluHyperLinkButton(downloadInfo.getBrowserDownloadUrl());
         // linkBtn->setAlign(FluLabel::AlignLeft);
-        linkBtn->setText(downloadInfo.getName() + "(" +  downloadInfo.getSize() +")");
+        linkBtn->setText(downloadInfo.getName() + "(" + downloadInfo.getSize() + ")");
         vMainLayout->addWidget(linkBtn);
 
         auto label = new FluLabel;
@@ -52,9 +52,7 @@ InfoCard::InfoCard(Info info, QWidget *parent) : QWidget(parent), m_info(info)
 
     setFixedWidth(438);
     onThemeChanged();
-    connect(FluThemeUtils::getUtils(), &FluThemeUtils::themeChanged, this, [=](){
-        onThemeChanged();
-    });
+    connect(FluThemeUtils::getUtils(), &FluThemeUtils::themeChanged, this, [=]() { onThemeChanged(); });
 }
 
 InfoCard::~InfoCard()

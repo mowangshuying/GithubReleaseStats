@@ -26,10 +26,7 @@ ProjectDetailCard::ProjectDetailCard(QWidget *parent)
     m_vMainLayout->addWidget(m_repositoryNameLineEdit);
     m_vMainLayout->addWidget(m_showReleaseBtn, 0, Qt::AlignHCenter);
 
-    connect(m_showReleaseBtn, &FluStyleButton::clicked, this, [=]() {
-        emit clickedShowReleaseBtn();
-    });
-
+    connect(m_showReleaseBtn, &FluStyleButton::clicked, this, [=]() { emit clickedShowReleaseBtn(); });
 }
 
 ProjectDetailCard::~ProjectDetailCard()

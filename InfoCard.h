@@ -1,25 +1,26 @@
-#include <QWidget>
 #include "Info.h"
-#include <QStyleOption>
 #include <QPainter>
+#include <QStyleOption>
+#include <QWidget>
 
 class InfoCard : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     InfoCard(Info info, QWidget *parent = nullptr);
     ~InfoCard();
-    void paintEvent(QPaintEvent* event)
+    void paintEvent(QPaintEvent *event)
     {
         QStyleOption opt;
         opt.initFrom(this);
         QPainter painter(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
     }
-public slots:
+  public slots:
     // void onClickedShowReleaseBtn();
     void onThemeChanged();
-private:
+
+  private:
     Info m_info;
 };
